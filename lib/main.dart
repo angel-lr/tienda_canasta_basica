@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:tienda_canasta_basica/screens/login.dart';
+import 'package:tienda_canasta_basica/views/auth/login_screen.dart';
 
 void main() {
   runApp(const MainApp());
