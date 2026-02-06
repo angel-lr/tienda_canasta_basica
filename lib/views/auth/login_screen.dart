@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+// Asegúrate de tener este archivo creado en la carpeta controllers
+import '../../controllers/auth_controller.dart'; 
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -8,11 +10,17 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  // Controladores de texto
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  
+  // Clave del formulario para validaciones
   final _formKey = GlobalKey<FormState>();
 
-  // Estado de la lógica
+  // Instancia del Controlador (MVC)
+  final AuthController _authController = AuthController();
+
+  // Estado de la interfaz
   bool _isEmailStep = true;
 
   @override
@@ -22,14 +30,52 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  void _handleNextStep() {
-    if (_formKey.currentState!.validate()) {
-      if (_isEmailStep) {
-        setState(() => _isEmailStep = false);
+  // Lógica principal del botón
+  void _handleNextStep() async {
+    // 1. Validar formato de los campos
+    if (!_formKey.currentState!.validate()) return;
+
+    if (_isEmailStep) {
+      // Paso 1: Si es válido, avanzar al campo de contraseña
+      setState(() => _isEmailStep = false);
+    } else {
+      // Paso 2: Intentar Login llamando al Controlador
+      
+      // Opcional: Cerrar el teclado en escritorio/móvil
+      FocusScope.of(context).unfocus();
+
+      // Llamada asíncrona al backend
+      bool exito = await _authController.login(
+        _emailController.text.trim(),
+        _passwordController.text.trim(),
+        context
+      );
+
+      // Verificar si el widget sigue montado antes de usar 'context'
+      if (!mounted) return;
+
+      if (exito) {
+        // --- ÉXITO ---
+        ScaffoldMessenger.of(context).showSnackBar(
+           SnackBar(
+            content: Text('¡Bienvenido ${_authController.currentUser?.nombre}!'),
+            backgroundColor: Colors.green,
+            behavior: SnackBarBehavior.floating, // Mejor visualización en Desktop
+          )
+        );
+        // Aquí redirigirías al Home:
+        // Navigator.pushReplacementNamed(context, '/home');
       } else {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('Iniciando sesión...')));
+        // --- ERROR ---
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Error: Usuario no encontrado o contraseña incorrecta.'),
+            backgroundColor: Colors.red,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+        // Opcional: Regresar al paso 1 si falló
+        // setState(() => _isEmailStep = true); 
       }
     }
   }
@@ -37,33 +83,31 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[100], // Fondo suave para resaltar la tarjeta
       appBar: AppBar(
         backgroundColor: Colors.white,
-        elevation:
-            0, // Opcional: elimina la sombra por defecto para un look más flat
+        elevation: 0,
         centerTitle: true,
         leading: Padding(
-          padding: const EdgeInsets.all(8.0), // Ajusta el espacio
-          child: Image.asset(
-            'assets/icon/logo.png',
-          ), // O Image.network('url')
+          padding: const EdgeInsets.all(8.0),
+          child: Image.asset('assets/icon/logo.png', errorBuilder: (context, error, stackTrace) => const Icon(Icons.store)), 
         ),
-        actions: [IconButton(icon: const Icon(Icons.search), onPressed: () {})],
-        // --- AQUÍ ESTÁ EL TRUCO ---
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0), // Altura de la línea
+          preferredSize: const Size.fromHeight(1.0),
           child: Container(
-            color: Colors.grey.withOpacity(0.3), // Color de la línea
-            height: 2.0, // Grosor de la línea
+            color: Colors.grey.withOpacity(0.3),
+            height: 1.0,
           ),
         ),
       ),
       body: Center(
-        child: Padding(
+        child: Container(
+          // Restricción de ancho para que se vea bien en Linux Desktop (no ocupe toda la pantalla)
+          constraints: const BoxConstraints(maxWidth: 900),
           padding: const EdgeInsets.symmetric(horizontal: 50.0),
           child: Row(
             children: [
-              // COLUMNA IZQUIERDA: Texto dinámico
+              // --- COLUMNA IZQUIERDA: Texto de bienvenida ---
               Expanded(
                 flex: 1,
                 child: Padding(
@@ -72,33 +116,34 @@ class _LoginScreenState extends State<LoginScreen> {
                     duration: const Duration(milliseconds: 400),
                     child: Text(
                       _isEmailStep
-                          ? "Ingresa tu e-mail o teléfono para iniciar sesión"
-                          : "Ahora, ingresa tu contraseña para continuar",
+                          ? "Ingresa tu e-mail para iniciar sesión en la tienda"
+                          : "Ahora, ingresa tu contraseña de seguridad",
                       key: ValueKey(_isEmailStep),
                       style: const TextStyle(
-                        fontSize: 26,
-                        fontWeight: FontWeight.w500,
+                        fontSize: 28, // Un poco más grande para escritorio
+                        fontWeight: FontWeight.w600,
                         color: Color(0xFF3F4784),
+                        fontFamily: 'Segoe UI', // Fuente común en sistemas de escritorio
                       ),
                     ),
                   ),
                 ),
               ),
 
-              // COLUMNA DERECHA: La Tarjeta con lógica de pasos
+              // --- COLUMNA DERECHA: Tarjeta de Formulario ---
               Expanded(
                 flex: 1,
                 child: Container(
-                  padding: const EdgeInsets.all(35.0),
+                  padding: const EdgeInsets.all(40.0),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(color: Colors.grey.shade300),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
+                        color: Colors.black.withOpacity(0.08),
+                        blurRadius: 20,
+                        offset: const Offset(0, 10),
                       ),
                     ],
                   ),
@@ -107,92 +152,82 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // Label superior dinámico
+                        // Etiqueta del campo
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            _isEmailStep ? "E-mail o teléfono" : "Contraseña",
+                            _isEmailStep ? "Correo Electrónico" : "Contraseña",
                             style: TextStyle(
-                              fontSize: 13,
-                              color: Colors.grey[600],
+                              fontSize: 14,
+                              color: Colors.grey[700],
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 10),
 
-                        // Input con animación de cambio
+                        // Campo de texto con animación
                         AnimatedSwitcher(
                           duration: const Duration(milliseconds: 300),
+                          transitionBuilder: (Widget child, Animation<double> animation) {
+                            return FadeTransition(opacity: animation, child: child);
+                          },
                           child: _isEmailStep
                               ? _buildEmailField()
                               : _buildPasswordField(),
                         ),
 
-                        const SizedBox(height: 25),
+                        const SizedBox(height: 30),
 
-                        // Botón principal
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: _handleNextStep,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF23255D),
-                              foregroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(vertical: 18),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                        // Botón de Acción con Estado de Carga (Loading)
+                        ValueListenableBuilder<bool>(
+                          valueListenable: _authController.isLoading,
+                          builder: (context, isLoading, child) {
+                            return SizedBox(
+                              width: double.infinity,
+                              height: 50, // Altura fija cómoda para el mouse
+                              child: ElevatedButton(
+                                onPressed: isLoading ? null : _handleNextStep,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFF23255D),
+                                  foregroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  elevation: 2,
+                                ),
+                                child: isLoading
+                                  ? const SizedBox(
+                                      height: 24, 
+                                      width: 24, 
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white, 
+                                        strokeWidth: 2.5
+                                      )
+                                    )
+                                  : Text(
+                                      _isEmailStep ? 'Continuar' : 'Iniciar Sesión',
+                                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                    ),
                               ),
-                              elevation: 0,
-                            ),
-                            child: Text(
-                              _isEmailStep ? 'Continuar' : 'Iniciar Sesión',
-                            ),
-                          ),
+                            );
+                          },
                         ),
 
-                        // Opciones secundarias
-                        const SizedBox(height: 15),
+                        const SizedBox(height: 20),
+
+                        // Botones secundarios
                         if (_isEmailStep)
                           TextButton(
-                            onPressed: () {},
-                            child: const Text(
-                              "Crear cuenta",
-                              style: TextStyle(color: Color(0xFF23255D)),
-                            ),
+                            onPressed: () {
+                              // Navegar a registro (HU-33)
+                            },
+                            child: const Text("Crear cuenta nueva", style: TextStyle(color: Color(0xFF23255D))),
                           )
                         else
                           TextButton(
-                            onPressed: () =>
-                                setState(() => _isEmailStep = true),
-                            child: const Text(
-                              "Usar otro correo",
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          ),
-
-                        const SizedBox(height: 10),
-
-                        // Botón de Google (solo visible en el primer paso para limpiar la interfaz)
-                        if (_isEmailStep)
-                          OutlinedButton.icon(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.g_mobiledata,
-                              color: Colors.red,
-                              size: 30,
-                            ),
-                            label: const Text(
-                              "Acceder con Google",
-                              style: TextStyle(color: Colors.black54),
-                            ),
-                            style: OutlinedButton.styleFrom(
-                              minimumSize: const Size(double.infinity, 50),
-                              side: BorderSide(color: Colors.grey.shade300),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
+                            onPressed: () => setState(() => _isEmailStep = true),
+                            child: const Text("Usar otro correo", style: TextStyle(color: Colors.grey)),
                           ),
                       ],
                     ),
@@ -206,47 +241,50 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  // Constructor del campo Email
   Widget _buildEmailField() {
     return TextFormField(
       key: const ValueKey('emailField'),
       controller: _emailController,
+      autofocus: true, // Útil en Desktop para escribir directo
       decoration: InputDecoration(
         hintText: 'ejemplo@correo.com',
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 15,
-          vertical: 15,
-        ),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
         prefixIcon: const Icon(Icons.email_outlined),
+        filled: true,
+        fillColor: Colors.grey[50],
       ),
       keyboardType: TextInputType.emailAddress,
       validator: (value) {
-        if (value == null || value.isEmpty) return 'Ingresa tu correo';
-        if (!value.contains('@')) return 'Correo no válido';
+        if (value == null || value.isEmpty) return 'Por favor ingresa tu correo';
+        if (!value.contains('@')) return 'Ingresa un correo válido';
         return null;
       },
+      onFieldSubmitted: (_) => _handleNextStep(), // Permitir Enter para avanzar
     );
   }
 
+  // Constructor del campo Password
   Widget _buildPasswordField() {
     return TextFormField(
       key: const ValueKey('passField'),
       controller: _passwordController,
+      autofocus: true,
       obscureText: true,
       decoration: InputDecoration(
-        hintText: 'Tu contraseña',
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 15,
-          vertical: 15,
-        ),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+        hintText: '••••••••',
+        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
         prefixIcon: const Icon(Icons.lock_outline),
+        filled: true,
+        fillColor: Colors.grey[50],
       ),
       validator: (value) {
         if (value == null || value.isEmpty) return 'Ingresa tu contraseña';
-        if (value.length < 6) return 'Mínimo 6 caracteres';
         return null;
       },
+      onFieldSubmitted: (_) => _handleNextStep(), // Permitir Enter para enviar
     );
   }
 }
