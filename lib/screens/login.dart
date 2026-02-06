@@ -45,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
         leading: Padding(
           padding: const EdgeInsets.all(8.0), // Ajusta el espacio
           child: Image.asset(
-            'assets/logo.jpg',
+            'assets/icon/logo.png',
           ), // O Image.network('url')
         ),
         actions: [IconButton(icon: const Icon(Icons.search), onPressed: () {})],
