@@ -1,3 +1,10 @@
+/**
+ * NOMBRE DEL EQUIPO: SISTEMA DE TIENDA EN LINEA, EQUIPO 7 
+ * AUTOR DEL ARCHIVO: JOSÉ ANGEL VIRGEN ESLAVA
+ * FECHA>: 06-02-2026
+ */
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tienda_canasta_basica/views/auth/login_screen.dart';
@@ -15,8 +22,7 @@ void main() {
     // Validamos HU-11 (Elementos de Login)
     expect(find.byType(TextFormField), findsOneWidget);
     expect(find.byType(ElevatedButton), findsOneWidget);
-    
-    // Interactuamos
+     
     await tester.enterText(find.byType(TextFormField), 'cliente@prueba.com');
     expect(find.text('cliente@prueba.com'), findsOneWidget);
     

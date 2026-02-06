@@ -1,3 +1,11 @@
+/**
+ * NOMBRE DEL EQUIPO: SISTEMA DE TIENDA EN LINEA, EQUIPO 7 
+ * AUTOR DEL ARCHIVO: CRUZ LÓPEZ PEDRO
+ * FECHA>: 06-02-2026
+ */
+
+
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tienda_canasta_basica/models/producto_model.dart';
 import 'package:tienda_canasta_basica/models/usuario_model.dart';
@@ -24,9 +32,9 @@ void main() {
         id: 1, nombre: 'Test', precio: 10, unidadMedida: 'x', stock: 10
       );
       
-      prod.stock = -5; // Intentamos romper la regla
+      prod.stock = -5; 
 
-      expect(prod.stock, 0); // Asumiendo que tu setter protege el valor
+      expect(prod.stock, 0);  
       print('✅ HU-30 VALIDADA: El sistema protege contra stock negativo (Integridad de datos).');
     });
 

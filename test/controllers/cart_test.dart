@@ -1,3 +1,10 @@
+/**
+ * NOMBRE DEL EQUIPO: SISTEMA DE TIENDA EN LINEA, EQUIPO 7 
+ * AUTOR DEL ARCHIVO: RAMIREZ GONZALES ERICK DANIEL
+ * FECHA>: 06-02-2026
+ */
+
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tienda_canasta_basica/controllers/pedido_controller.dart';
 import 'package:tienda_canasta_basica/models/producto_model.dart';
@@ -21,8 +28,8 @@ void main() {
 
     test('HU-37: Agrupación de Detalles', () {
       controller.agregarAlCarrito(p1, 1);
-      controller.agregarAlCarrito(p1, 5); // 6 en total
-
+      controller.agregarAlCarrito(p1, 5);  
+      
       expect(controller.carrito.length, 1);
       expect(controller.carrito.first.cantidad, 6);
       print('✅ HU-37 VALIDADA: Los detalles del mismo producto se agrupan en una sola línea.');

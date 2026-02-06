@@ -1,3 +1,11 @@
+/**
+ * NOMBRE DEL EQUIPO: SISTEMA DE TIENDA EN LINEA, EQUIPO 7 
+ * AUTOR DEL ARCHIVO: RAMIREZ GONZALES ERICK DANIEL
+ * FECHA>: 06-02-2026
+ */
+
+
+
 class CategoriaModel {
   int? id;
   String nombre;

@@ -1,7 +1,14 @@
+/**
+ * NOMBRE DEL EQUIPO: SISTEMA DE TIENDA EN LINEA, EQUIPO 7 
+ * AUTOR DEL ARCHIVO: LOPEZ CAMARILLO DANIEL
+ * FECHA>: 06-02-2026
+ */
+
+
 class DireccionModel {
   int? id;
   int usuarioId;
-  String nombre; // Alias: "Casa", "Oficina"
+  String nombre; 
   String calle;
   String numeroExterior;
   String? numeroInterior;

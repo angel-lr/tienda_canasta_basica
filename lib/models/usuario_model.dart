@@ -1,10 +1,17 @@
+/**
+ * NOMBRE DEL EQUIPO: SISTEMA DE TIENDA EN LINEA, EQUIPO 7 
+ * AUTOR DEL ARCHIVO: LOPEZ CAMARILLO DANIEL
+ * FECHA>: 06-02-2026
+ */
+
+
 class UsuarioModel {
   int? id;
   String nombre;
   String email;
-  String password; // Recuerda hashear esto en producción
+  String password;
   String? telefono;
-  String rol; // 'admin' o 'cliente'
+  String rol; 
 
   UsuarioModel({
     this.id,

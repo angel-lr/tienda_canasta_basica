@@ -1,9 +1,17 @@
+/**
+ * NOMBRE DEL EQUIPO: SISTEMA DE TIENDA EN LINEA, EQUIPO 7 
+ * AUTOR DEL ARCHIVO: RAMIREZ GONZALES ERICK DANIEL
+ * FECHA>: 06-02-2026
+ */
+
+
+
 class DetallePedidoModel {
   int? id;
   int? pedidoId;
   int productoId;
   int cantidad;
-  double precioUnitario; // Precio congelado al momento de compra
+  double precioUnitario;
   double? precioOferta;
 
   DetallePedidoModel({
@@ -14,8 +22,7 @@ class DetallePedidoModel {
     required this.precioUnitario,
     this.precioOferta,
   });
-
-  // Calcula el subtotal de esta línea
+ 
   double get subtotal => cantidad * (precioOferta ?? precioUnitario);
 
   factory DetallePedidoModel.fromJson(Map<String, dynamic> json) {

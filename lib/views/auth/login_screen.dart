@@ -1,5 +1,11 @@
+/**
+ * NOMBRE DEL EQUIPO: SISTEMA DE TIENDA EN LINEA, EQUIPO 7 
+ * AUTOR DEL ARCHIVO: CRUZ LÓPEZ PEDRO
+ * FECHA>: 06-02-2026
+ */
+
+
 import 'package:flutter/material.dart';
-// Asegúrate de tener este archivo creado en la carpeta controllers
 import '../../controllers/auth_controller.dart'; 
 
 class LoginScreen extends StatefulWidget {
@@ -9,18 +15,13 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  // Controladores de texto
+class _LoginScreenState extends State<LoginScreen> { 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  
-  // Clave del formulario para validaciones
-  final _formKey = GlobalKey<FormState>();
+   
+  final _formKey = GlobalKey<FormState>(); 
+  final AuthController _authController = AuthController(); 
 
-  // Instancia del Controlador (MVC)
-  final AuthController _authController = AuthController();
-
-  // Estado de la interfaz
   bool _isEmailStep = true;
 
   @override
@@ -29,53 +30,41 @@ class _LoginScreenState extends State<LoginScreen> {
     _passwordController.dispose();
     super.dispose();
   }
-
-  // Lógica principal del botón
-  void _handleNextStep() async {
-    // 1. Validar formato de los campos
+ 
+  void _handleNextStep() async { 
     if (!_formKey.currentState!.validate()) return;
 
-    if (_isEmailStep) {
-      // Paso 1: Si es válido, avanzar al campo de contraseña
+    if (_isEmailStep) { 
       setState(() => _isEmailStep = false);
-    } else {
-      // Paso 2: Intentar Login llamando al Controlador
-      
-      // Opcional: Cerrar el teclado en escritorio/móvil
+    } else { 
+       
       FocusScope.of(context).unfocus();
-
-      // Llamada asíncrona al backend
+      // llamado al backeend
       bool exito = await _authController.login(
         _emailController.text.trim(),
         _passwordController.text.trim(),
         context
       );
-
-      // Verificar si el widget sigue montado antes de usar 'context'
+ 
       if (!mounted) return;
 
-      if (exito) {
-        // --- ÉXITO ---
+      if (exito) { 
         ScaffoldMessenger.of(context).showSnackBar(
            SnackBar(
             content: Text('¡Bienvenido ${_authController.currentUser?.nombre}!'),
             backgroundColor: Colors.green,
-            behavior: SnackBarBehavior.floating, // Mejor visualización en Desktop
+            behavior: SnackBarBehavior.floating,  
           )
-        );
-        // Aquí redirigirías al Home:
-        // Navigator.pushReplacementNamed(context, '/home');
-      } else {
-        // --- ERROR ---
+        ); 
+
+      } else { 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Error: Usuario no encontrado o contraseña incorrecta.'),
             backgroundColor: Colors.red,
             behavior: SnackBarBehavior.floating,
           ),
-        );
-        // Opcional: Regresar al paso 1 si falló
-        // setState(() => _isEmailStep = true); 
+        ); 
       }
     }
   }
@@ -83,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100], // Fondo suave para resaltar la tarjeta
+      backgroundColor: Colors.grey[100], 
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -102,12 +91,11 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       body: Center(
         child: Container(
-          // Restricción de ancho para que se vea bien en Linux Desktop (no ocupe toda la pantalla)
+          // Restricción de ancho para que se vea bien en Linux
           constraints: const BoxConstraints(maxWidth: 900),
           padding: const EdgeInsets.symmetric(horizontal: 50.0),
           child: Row(
-            children: [
-              // --- COLUMNA IZQUIERDA: Texto de bienvenida ---
+            children: [ 
               Expanded(
                 flex: 1,
                 child: Padding(
@@ -120,17 +108,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           : "Ahora, ingresa tu contraseña de seguridad",
                       key: ValueKey(_isEmailStep),
                       style: const TextStyle(
-                        fontSize: 28, // Un poco más grande para escritorio
+                        fontSize: 28,  
                         fontWeight: FontWeight.w600,
                         color: Color(0xFF3F4784),
-                        fontFamily: 'Segoe UI', // Fuente común en sistemas de escritorio
+                        fontFamily: 'Segoe UI',  
                       ),
                     ),
                   ),
                 ),
               ),
-
-              // --- COLUMNA DERECHA: Tarjeta de Formulario ---
+ 
               Expanded(
                 flex: 1,
                 child: Container(
@@ -151,8 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     key: _formKey,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
-                      children: [
-                        // Etiqueta del campo
+                      children: [ 
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
@@ -179,7 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                         const SizedBox(height: 30),
 
-                        // Botón de Acción con Estado de Carga (Loading)
+                        // Botón de Acción con Estado de Carga 
                         ValueListenableBuilder<bool>(
                           valueListenable: _authController.isLoading,
                           builder: (context, isLoading, child) {
@@ -215,12 +201,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
 
                         const SizedBox(height: 20),
-
-                        // Botones secundarios
+ 
                         if (_isEmailStep)
                           TextButton(
-                            onPressed: () {
-                              // Navegar a registro (HU-33)
+                            onPressed: () { 
                             },
                             child: const Text("Crear cuenta nueva", style: TextStyle(color: Color(0xFF23255D))),
                           )
@@ -246,7 +230,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return TextFormField(
       key: const ValueKey('emailField'),
       controller: _emailController,
-      autofocus: true, // Útil en Desktop para escribir directo
+      autofocus: true,
       decoration: InputDecoration(
         hintText: 'ejemplo@correo.com',
         contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
@@ -261,7 +245,7 @@ class _LoginScreenState extends State<LoginScreen> {
         if (!value.contains('@')) return 'Ingresa un correo válido';
         return null;
       },
-      onFieldSubmitted: (_) => _handleNextStep(), // Permitir Enter para avanzar
+      onFieldSubmitted: (_) => _handleNextStep(), 
     );
   }
 
@@ -284,7 +268,7 @@ class _LoginScreenState extends State<LoginScreen> {
         if (value == null || value.isEmpty) return 'Ingresa tu contraseña';
         return null;
       },
-      onFieldSubmitted: (_) => _handleNextStep(), // Permitir Enter para enviar
+      onFieldSubmitted: (_) => _handleNextStep(), 
     );
   }
 }

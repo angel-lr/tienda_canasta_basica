@@ -1,3 +1,9 @@
+/**
+ * NOMBRE DEL EQUIPO: SISTEMA DE TIENDA EN LINEA, EQUIPO 7 
+ * AUTOR DEL ARCHIVO: JOSÉ ANGEL VIRGEN ESLAVA
+ * FECHA>: 06-02-2026
+ */
+
 import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 

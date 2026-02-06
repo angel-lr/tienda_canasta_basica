@@ -1,18 +1,22 @@
+/**
+ * NOMBRE DEL EQUIPO: SISTEMA DE TIENDA EN LINEA, EQUIPO 7 
+ * AUTOR DEL ARCHIVO: LÓPEZ RUIZ ANGEL
+ * FECHA>: 06-02-2026
+ */
+
+
 import 'package:mysql_client/mysql_client.dart';
 import 'db_connector.dart';
 import '../models/producto_model.dart';
 import '../models/pedido_model.dart';
-import '../models/detalle_pedido_model.dart';
+//import '../models/detalle_pedido_model.dart';
 
 class PersistenceService {
-  
-  /// Obtiene todos los productos del catálogo
+   
   Future<List<ProductoModel>> getProductos() async {
     MySQLConnection? conn;
     try {
-      conn = await DbConnector.getConnection();
-      
-      // Consultamos productos y sus categorías (JOIN opcional, aquí simple)
+      conn = await DbConnector.getConnection(); 
       var result = await conn.execute("SELECT * FROM productos WHERE stock > 0");
       
       List<ProductoModel> lista = [];
@@ -27,8 +31,7 @@ class PersistenceService {
       await conn?.close();
     }
   }
-
-  /// Busca productos por nombre (Buscador)
+ 
   Future<List<ProductoModel>> buscarProductos(String query) async {
     MySQLConnection? conn;
     try {
@@ -46,17 +49,13 @@ class PersistenceService {
       await conn?.close();
     }
   }
-
-  /// TRANSACCIÓN COMPLEJA: Crea el pedido, inserta detalles y descuenta stock
+ 
   Future<bool> crearPedidoCompleto(PedidoModel pedido) async {
     MySQLConnection? conn;
     try {
-      conn = await DbConnector.getConnection();
-
-      // Iniciamos una transacción para que todo se guarde o nada se guarde (Atomicidad)
+      conn = await DbConnector.getConnection(); 
       await conn.transactional((ctx) async {
-        
-        // 1. Insertar el Pedido (Cabecera)
+         
         var resPedido = await ctx.execute(
           "INSERT INTO pedidos (usuario_id, direccion_id, total, estatus, fecha_creacion) VALUES (:uid, :did, :total, :estatus, NOW())",
           {
@@ -66,13 +65,10 @@ class PersistenceService {
             "estatus": "Pendiente"
           }
         );
-        
-        // Obtener el ID del pedido recién creado
+         
         final pedidoId = resPedido.lastInsertID;
-
-        // 2. Insertar cada detalle y descontar stock
-        for (var detalle in pedido.detalles) {
-          // A. Guardar detalle
+        
+        for (var detalle in pedido.detalles) { 
           await ctx.execute(
             "INSERT INTO detalles_pedido (pedido_id, producto_id, cantidad, precio_unitario, precio_oferta) VALUES (:pid, :prodId, :cant, :pu, :po)",
             {
@@ -83,8 +79,7 @@ class PersistenceService {
               "po": detalle.precioOferta
             }
           );
-
-          // B. Descontar Stock (Validación de base de datos)
+ 
           await ctx.execute(
             "UPDATE productos SET stock = stock - :cant WHERE id = :prodId",
             {
@@ -95,7 +90,7 @@ class PersistenceService {
         }
       });
 
-      return true; // Si llega aquí, la transacción fue exitosa
+      return true;
     } catch (e) {
       print('❌ Error CRÍTICO en transacción de pedido: $e');
       return false;

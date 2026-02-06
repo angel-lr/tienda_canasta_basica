@@ -1,9 +1,16 @@
+/**
+ * NOMBRE DEL EQUIPO: SISTEMA DE TIENDA EN LINEA, EQUIPO 7 
+ * AUTOR DEL ARCHIVO: LOPEZ CAMARILLO DANIEL
+ * FECHA>: 06-02-2026
+ */
+
+
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tienda_canasta_basica/models/producto_model.dart';
 
 void main() {
-  group('HU-29 y HU-30: Persistencia de Productos', () {
-    // Datos de prueba 
+  group('HU-29 y HU-30: Persistencia de Productos', () { 
     final Map<String, dynamic> productoJson = {
       'id': 1,
       'categoria_id': 5,
@@ -32,15 +39,13 @@ void main() {
       producto.stock = producto.stock - 10;
       expect(producto.stock, 90);
 
-      // Verificamos que la lógica de negocio proteja la integridad
-      // (Asumiendo que agregaste un setter o método de validación en tu modelo)
+      // Verificamos que la lógica de negocio proteja la integridad 
       bool stockValido = producto.stock >= 0;
       expect(stockValido, true, reason: "El stock nunca debe ser menor a 0");
     });
 
     test('Cálculo de precio final con oferta (Regla de Negocio)', () {
-      final producto = ProductoModel.fromJson(productoJson);
-      // Si está en oferta, el precio activo debe ser el de oferta
+      final producto = ProductoModel.fromJson(productoJson); 
       expect(producto.precioActual, 22.00);
     });
   });

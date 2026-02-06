@@ -1,3 +1,10 @@
+/**
+ * NOMBRE DEL EQUIPO: SISTEMA DE TIENDA EN LINEA, EQUIPO 7 
+ * AUTOR DEL ARCHIVO: LOPEZ CAMARILLO DANIEL
+ * FECHA>: 06-02-2026
+ */
+
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tienda_canasta_basica/models/producto_model.dart';
 import 'package:tienda_canasta_basica/models/usuario_model.dart';
@@ -8,7 +15,7 @@ import 'package:tienda_canasta_basica/models/detalle_pedido_model.dart';
 void main() {
   group('Pruebas de Persistencia - Modelos de Datos', () {
     
-    // HU-29, HU-30, HU-31: Gestión de Productos
+    //  Gestión de Productos
     test('HU-29: ProductoModel debe mapear correctamente desde JSON (BD)', () {
       final json = {
         'id': 1,
@@ -18,7 +25,7 @@ void main() {
         'precio': 35.50,
         'unidad_medida': 'kg',
         'stock': 50,
-        'es_oferta': 1, // Simula el bit de MySQL
+        'es_oferta': 1,  
         'precio_oferta': 30.00
       };
 
@@ -33,15 +40,13 @@ void main() {
       final producto = ProductoModel(
         id: 1, nombre: 'Test', precio: 10, unidadMedida: 'x', stock: 10
       );
-      
-      // Intentamos asignar stock negativo
+       
       producto.stock = -5;
-      
-      // La lógica del setter debe impedirlo o manejarlo
+       
       expect(producto.stock >= 0, true, reason: "El stock no debe ser negativo");
     });
 
-    // HU-33: Gestión de Usuarios
+    //  Gestión de Usuarios
     test('HU-33: UsuarioModel debe soportar roles de Admin y Cliente', () {
       final usuario = UsuarioModel(
         id: 1, 
@@ -54,11 +59,11 @@ void main() {
       expect(usuario.rol, 'admin');
     });
 
-    // HU-34: Direcciones
+    // Direcciones
     test('HU-34: DireccionModel debe vincularse a un UsuarioID', () {
       final direccion = DireccionModel(
         id: 1,
-        usuarioId: 100, // FK
+        usuarioId: 100, 
         nombre: 'Casa',
         calle: 'Av. Siempre Viva',
         numeroExterior: '742',
@@ -75,7 +80,7 @@ void main() {
       expect(categoria.nombre, 'Granos y Semillas');
     });
 
-    // HU-37: Detalles de Pedido
+    //Detalles de Pedido
     test('HU-37: DetallePedido debe calcular subtotal correctamente', () {
       final detalle = DetallePedidoModel(
         productoId: 1,

@@ -1,3 +1,10 @@
+/**
+ * NOMBRE DEL EQUIPO: SISTEMA DE TIENDA EN LINEA, EQUIPO 7 
+ * AUTOR DEL ARCHIVO: LÓPEZ RUÍZ ANGEL
+ * FECHA>: 06-02-2026
+ */
+
+
 import 'package:mysql_client/mysql_client.dart';
 import '../models/usuario_model.dart';
 import 'db_connector.dart';
@@ -9,22 +16,18 @@ class AuthService {
     
     try {
       conn = await DbConnector.getConnection();
-
-      // Ejecutamos la consulta (el signo ? sigue siendo el placeholder seguro)
+ 
       var result = await conn.execute(
         'SELECT id, nombre, email, password, telefono, rol FROM usuarios WHERE email = :email AND password = :password',
-        {'email': email, 'password': password}, // Este paquete usa mapas para parámetros nombrados o ? para posicionales
+        {'email': email, 'password': password}, 
       );
-
-      // Verificamos si hay filas
+ 
       if (result.rows.isNotEmpty) {
         final row = result.rows.first;
-        
-        // Mapeamos los datos (el acceso a columnas es por nombre usando assoc())
         final data = row.assoc();
         
         return UsuarioModel(
-          id: int.tryParse(data['id'] ?? '0'), // MySQL a veces devuelve strings, aseguramos el tipo
+          id: int.tryParse(data['id'] ?? '0'),
           nombre: data['nombre']!,
           email: data['email']!,
           password: data['password']!,
@@ -33,13 +36,12 @@ class AuthService {
         );
       }
       
-      return null; // Usuario no encontrado
+      return null; 
 
     } catch (e) {
       print('❌ Error en AuthService: $e');
       return null;
-    } finally {
-      // Importante: Cerrar la conexión
+    } finally { 
       if (conn != null && conn.connected) {
         await conn.close();
       }

@@ -1,3 +1,10 @@
+/**
+ * NOMBRE DEL EQUIPO: SISTEMA DE TIENDA EN LINEA, EQUIPO 7 
+ * AUTOR DEL ARCHIVO: RAMIREZ GONZALES ERICK DANIEL
+ * FECHA>: 06-02-2026
+ */
+
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tienda_canasta_basica/models/pedido_model.dart'; 
 import 'package:tienda_canasta_basica/models/detalle_pedido_model.dart';
@@ -27,8 +34,8 @@ void main() {
         fechaCreacion: DateTime.now()
       );
 
-      // 3. Calcular total (Lógica que debe estar en tu modelo o controlador)
-      pedido.calcularTotal(); // Llamamos al método que creamos
+      // 3. Calcular total 
+      pedido.calcularTotal(); 
 
       // 4. Verificación
       expect(pedido.total, 70.00, reason: "El total debe ser 20 + 50 = 70");

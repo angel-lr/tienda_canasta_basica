@@ -1,3 +1,11 @@
+/**
+ * NOMBRE DEL EQUIPO: SISTEMA DE TIENDA EN LINEA, EQUIPO 7 
+ * AUTOR DEL ARCHIVO: RAMIREZ GONZALES ERICK DANIEL
+ * FECHA>: 06-02-2026
+ */
+
+
+
 class ProductoModel {
   int? id;
   int? categoriaId;
@@ -5,7 +13,7 @@ class ProductoModel {
   String? descripcion;
   double precio;
   String unidadMedida;
-  int _stock; // Propiedad privada para encapsular validación
+  int _stock;
   String? imagenUrl;
   bool esOferta;
   double? precioOferta;
@@ -21,24 +29,19 @@ class ProductoModel {
     this.imagenUrl,
     this.esOferta = false,
     this.precioOferta,
-  }) : _stock = stock; // Inicializador
+  }) : _stock = stock; 
 
-  // Getter para obtener el stock
+
   int get stock => _stock;
-
-  // Setter con validación de integridad (HU-30)
+ 
   set stock(int value) {
-    if (value < 0) {
-      // Opción A: Lanzar error
-      // throw Exception("El stock no puede ser negativo");
-      // Opción B: Ajustar a 0 (Defensivo)
+    if (value < 0) { 
       _stock = 0;
     } else {
       _stock = value;
     }
   }
-
-  // Lógica de Negocio: Calcular precio real
+ 
   double get precioActual {
     if (esOferta && precioOferta != null) {
       return precioOferta!;
@@ -51,8 +54,7 @@ class ProductoModel {
       id: json['id'],
       categoriaId: json['categoria_id'],
       nombre: json['nombre'],
-      descripcion: json['descripcion'],
-      // Manejo seguro de tipos numéricos (int a double)
+      descripcion: json['descripcion'], 
       precio: (json['precio'] is int) ? (json['precio'] as int).toDouble() : json['precio'],
       unidadMedida: json['unidad_medida'],
       stock: json['stock'],

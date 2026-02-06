@@ -1,3 +1,9 @@
+/**
+ * NOMBRE DEL EQUIPO: SISTEMA DE TIENDA EN LINEA, EQUIPO 7 
+ * AUTOR DEL ARCHIVO: JOSÉ ANGEL VIRGEN ESLAVA
+ * FECHA>: 06-02-2026
+ */
+
 import 'detalle_pedido_model.dart';
 
 class PedidoModel {
@@ -18,8 +24,7 @@ class PedidoModel {
     required this.fechaCreacion,
     this.detalles = const [],
   });
-
-  // Lógica de negocio: Recalcular total basado en detalles
+ 
   void calcularTotal() {
     double tempTotal = 0;
     for (var item in detalles) {
