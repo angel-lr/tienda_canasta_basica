@@ -9,7 +9,7 @@ import 'package:tienda_canasta_basica/models/usuario_model.dart';
 import 'package:tienda_canasta_basica/controllers/users_controller.dart';
 
 void main() {
-  // HU-42: Implementar la persistencia para actualizar un usuario [cite: 47, 63]
+  // HU-42: Implementar la persistencia para actualizar un usuario 
   group('Pruebas Unitarias - Módulo 2: Gestión de Usuario', () {
     final UsersController usersController = UsersController();
 
@@ -27,7 +27,7 @@ void main() {
       // Ejecución: Se llama al controlador para persistir los cambios 
       final resultado = await usersController.actualizarUsuario(usuarioPrueba);
 
-      // Verificación: Se espera éxito o un error controlado si el ID no existe [cite: 47]
+      // Verificación: Se espera éxito o un error controlado si el ID no existe 
       expect(resultado, anyOf(
         equals("Usuario actualizado correctamente."),
         equals("No se pudo actualizar: El usuario no existe.")
@@ -46,7 +46,7 @@ void main() {
 
       final resultado = await usersController.actualizarUsuario(usuarioInvalido);
 
-      // Verificación del criterio: Solo se actualiza el usuario indicado por ID [cite: 47]
+      // Verificación del criterio: Solo se actualiza el usuario indicado por ID 
       expect(resultado, equals("Error: ID de usuario no válido."));
     });
   });
