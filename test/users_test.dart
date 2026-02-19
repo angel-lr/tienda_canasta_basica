@@ -1,7 +1,7 @@
 /**
  * NOMBRE DEL EQUIPO: SISTEMA DE TIENDA EN LINEA, EQUIPO 7 
  * AUTOR DEL ARCHIVO: RAMIREZ GONZALEZ ERICK DANIEL
- * FECHA: 17-02-2026
+ * FECHA: 19-02-2026
  */
 
 import 'package:flutter_test/flutter_test.dart';
