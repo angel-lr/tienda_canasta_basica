@@ -10,7 +10,7 @@ import '../services/users_service.dart';
 class UsersController {
   final UsersService _usersService = UsersService();
 
-  // HU-42: Implementar la persistencia para actualizar un usuario. [cite: 22, 47]
+  // HU-42: Implementar la persistencia para actualizar un usuario.
   // Esta función llama al servicio y retorna un mensaje de éxito o error.
   Future<String> actualizarUsuario(UsuarioModel usuario) async {
     try {
@@ -25,7 +25,7 @@ class UsersController {
       if (exito) {
         return "Usuario actualizado correctamente.";
       } else {
-        // Cumple con el criterio: Si el usuario no existe, se indica el error [cite: 48, 49]
+        // Cumple con el criterio: Si el usuario no existe, se indica el error 
         return "No se pudo actualizar: El usuario no existe.";
       }
     } catch (e) {
