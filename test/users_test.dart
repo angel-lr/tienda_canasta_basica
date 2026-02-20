@@ -50,7 +50,13 @@ void main() {
       expect(resultado, equals("Error: ID de usuario no válido."));
     });
 
-
+    
+    /**
+ * NOMBRE DEL EQUIPO: SISTEMA DE TIENDA EN LINEA, EQUIPO 7 
+ * AUTOR DEL ARCHIVO: LÓPEZ CAMARILLO DANIEL
+ * FECHA: 20-02-2026
+ */
+    
     //TEST DE LA HU-44
  test('HU-44: Debe retornar un usuario cuando el ID existe', () async {
       final int idExistente = 1; 
