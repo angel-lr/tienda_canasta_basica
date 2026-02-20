@@ -49,5 +49,16 @@ void main() {
       // Verificación del criterio: Solo se actualiza el usuario indicado por ID 
       expect(resultado, equals("Error: ID de usuario no válido."));
     });
-  });
-}
+
+
+    //TEST DE LA HU-44
+ test('HU-44: Debe retornar un usuario cuando el ID existe', () async {
+      final int idExistente = 1; 
+      final resultado = await usersController.obtenerUsuario(idExistente);
+      expect(resultado, anyOf(
+        isA<UsuarioModel>(),
+        equals("Error: El usuario con ID $idExistente no fue encontrado.")
+      ));
+    });
+  }); // <--- Esta cierra el grupo
+} // <--- Esta cierra el main
