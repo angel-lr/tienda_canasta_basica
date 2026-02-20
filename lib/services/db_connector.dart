@@ -14,8 +14,8 @@ class DbConnector {
       final conn = await MySQLConnection.createConnection(
         host: '127.0.0.1',
         port: 3306,
-        userName: 'root',
-        password: 'root', 
+        userName: 'admin',
+        password: 'admin', 
         databaseName: 'tienda_canasta',
         secure: false,  
       );
