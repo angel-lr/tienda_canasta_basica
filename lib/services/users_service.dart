@@ -40,4 +40,32 @@ class UsersService {
       await conn?.close();
     }
   }
+
+
+  // HU-44: Implementar la persistencia para consultar un usuario por ID.
+  Future<UsuarioModel?> buscarUsuarioPorId(int id) async {
+    MySQLConnection? conn;
+    try {
+      conn = await DbConnector.getConnection();
+      var result = await conn.execute(
+        "SELECT * FROM usuarios WHERE id = :id",
+        {"id": id},
+      );
+      if (result.rows.isEmpty) return null;
+      var row = result.rows.first.assoc();
+      return UsuarioModel(
+        id: int.parse(row['id']!),
+        nombre: row['nombre']!,
+        email: row['email']!,
+        password: row['password']!,
+        telefono: row['telefono']!,
+        rol: row['rol']!,
+      );
+    } catch (e) {
+      print('❌ Error al buscar usuario: $e');
+      return null;
+    } finally {
+      await conn?.close();
+    }
+  }  
 }
