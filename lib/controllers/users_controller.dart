@@ -32,8 +32,15 @@ class UsersController {
       return "Error en el controlador: $e";
     }
   }
-  
 
+
+  /**
+ * NOMBRE DEL EQUIPO: SISTEMA DE TIENDA EN LINEA, EQUIPO 7 
+ * AUTOR DEL ARCHIVO: LÓPEZ CAMARILLO DANIEL
+ * FECHA: 20-02-2026
+ */
+
+  
   // HU-44: Lógica para buscar un usuario por su ID
   Future<dynamic> obtenerUsuario(int? id) async {
     try {
