@@ -32,4 +32,22 @@ class UsersController {
       return "Error en el controlador: $e";
     }
   }
+  
+
+  // HU-44: Lógica para buscar un usuario por su ID
+  Future<dynamic> obtenerUsuario(int? id) async {
+    try {
+      if (id == null || id! < 1) {
+        return "Error: ID de usuario no válido.";
+      }
+      UsuarioModel? usuario = await _usersService.buscarUsuarioPorId(id!);
+      if (usuario != null) {
+        return usuario;
+      } else {
+        return "Error: El usuario con ID $id no fue encontrado.";
+      }
+    } catch (e) {
+      return "Error en el controlador al buscar: $e";
+    }
+  }
 }
