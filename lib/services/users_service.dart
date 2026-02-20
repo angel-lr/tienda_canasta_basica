@@ -41,6 +41,11 @@ class UsersService {
     }
   }
 
+  /**
+ * NOMBRE DEL EQUIPO: SISTEMA DE TIENDA EN LINEA, EQUIPO 7 
+ * AUTOR DEL ARCHIVO: LÓPEZ CAMARILLO DANIEL
+ * FECHA: 20-02-2026
+ */
 
   // HU-44: Implementar la persistencia para consultar un usuario por ID.
   Future<UsuarioModel?> buscarUsuarioPorId(int id) async {
