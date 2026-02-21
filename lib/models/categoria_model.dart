@@ -1,10 +1,8 @@
 /**
  * NOMBRE DEL EQUIPO: SISTEMA DE TIENDA EN LINEA, EQUIPO 7 
  * AUTOR DEL ARCHIVO: RAMIREZ GONZALES ERICK DANIEL
- * FECHA>: 06-02-2026
+ * FECHA>: 06-02-2026  
  */
-
-
 
 class CategoriaModel {
   int? id;
@@ -16,9 +14,9 @@ class CategoriaModel {
   });
 
   factory CategoriaModel.fromJson(Map<String, dynamic> json) {
-    return CategoriaModel(
-      id: json['id'],
-      nombre: json['nombre'],
+    return CategoriaModel( 
+      id: json['id'] != null ? int.tryParse(json['id'].toString()) : null,
+      nombre: json['nombre'].toString(), 
     );
   }
 
